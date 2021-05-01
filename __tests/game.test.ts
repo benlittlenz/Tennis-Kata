@@ -68,6 +68,10 @@ describe('Initialize tennis match', () => {
         scoreShouldEqual("0-0, Deuce");
         match.pointWonBy(playerOne);
         scoreShouldEqual(`0-0, Advantage ${playerOne}`);
+        match.pointWonBy(playerTwo);
+        scoreShouldEqual(`0-0, Deuce`);
+        match.pointWonBy(playerOne);
+        scoreShouldEqual(`0-0, Advantage ${playerOne}`);
     });
 
     it('Should handle player two advantage', () => {
@@ -76,6 +80,10 @@ describe('Initialize tennis match', () => {
             match.pointWonBy(playerTwo);
         }
         scoreShouldEqual("0-0, Deuce");
+        match.pointWonBy(playerTwo);
+        scoreShouldEqual(`0-0, Advantage ${playerTwo}`);
+        match.pointWonBy(playerOne);
+        scoreShouldEqual(`0-0, Deuce`);
         match.pointWonBy(playerTwo);
         scoreShouldEqual(`0-0, Advantage ${playerTwo}`);
     });
