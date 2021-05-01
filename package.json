@@ -1,0 +1,27 @@
+{
+  "name": "tennis-kata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "eslint": "eslint 'src/**/*.ts'",
+    "eslint:fix": "eslint --fix 'src/**/*.ts'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "4.22.0",
+    "@typescript-eslint/parser": "4.22.0",
+    "eslint": "7.25.0",
+    "eslint-config-airbnb": "18.2.1",
+    "husky": "6.0.0",
+    "jest": "^26.6.3",
+    "lint-staged": "10.5.4",
+    "ts-jest": "^26.5.5",
+    "typescript": "^4.2.4"
+  }
+}
