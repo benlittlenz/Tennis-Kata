@@ -23,4 +23,22 @@ describe('Initialize tennis match', () => {
         scoreShouldEqual("0-0, 0-0")
     });
 
+    /*
+        The running score of each game is described in a
+        manner peculiar to tennis: scores from zero to
+        three points are described as 0, 15, 30, 40,
+        respectively
+    */
+
+    it("should return correct score", () => {
+        match.pointWonBy(playerOne);
+        scoreShouldEqual("0-0, 15-0")
+        match.pointWonBy(playerOne);
+        scoreShouldEqual("0-0, 30-0")
+        match.pointWonBy(playerTwo);
+        scoreShouldEqual("0-0, 30-15")
+        match.pointWonBy(playerOne);
+        scoreShouldEqual("0-0, 40-15")
+    });
+
 })
