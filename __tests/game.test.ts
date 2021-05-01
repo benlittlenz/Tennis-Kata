@@ -10,8 +10,17 @@ describe('Initialize tennis match', () => {
         match = new Match(playerOne, playerTwo);
     });
 
+    const scoreShouldEqual = (expected: string) => {
+        expect(match.score()).toBe(expected);
+    }
+
     it('Should be a Match instance', () => {
         //console.log('HI', tennis)
         expect(match).toBeInstanceOf(Match);
     });
+
+    it("should return love all", () => {
+        scoreShouldEqual("0-0, 0-0")
+    });
+
 })
