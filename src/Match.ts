@@ -29,11 +29,22 @@ export class Match {
             this.deuces[index] = this.deuces[index] + 1;
             return
         }
+
+        if(this.playerOneWon()) {
+            this.games[0] = this.games[0] + 1;
+        }
+
+        if(this.playerTwoWon()) {
+            this.games[1] = this.games[1] + 1;
+        }
     }
 
     public score(): string {
         const games = `${this.games[0]}-${this.games[1]}`
         const points = this.getScore();
+        if(points === "") {
+            return games;
+        }
         return `${games}, ${points}`;
     }
 
@@ -49,6 +60,14 @@ export class Match {
         return this.points[1] >= 4 && this.points[1] - this.points[0] === 1 ? true : false;
     }
 
+    public playerOneWon(): boolean {
+        return this.points[0] >= 4 && (this.points[0] - this.points[1] >= 2) ? true : false;
+    }
+
+    public playerTwoWon(): boolean {
+        return this.points[1] >= 4 && (this.points[1] - this.points[0] >= 2) ? true : false;
+    }
+
     public getScore(): string {
         if (this.isDeuce()) {
             return 'Deuce';
@@ -61,6 +80,9 @@ export class Match {
         if (this.isAdvantagePlayerTwo()) {
             return `Advantage ${this.players[1]}`
         }
+
+        if(this.playerOneWon()) return ""
+        if(this.playerTwoWon()) return ""
 
         return `${pointLookup[this.points[0]]}-${pointLookup[this.points[1]]}`;
     }

@@ -88,4 +88,18 @@ describe('Initialize tennis match', () => {
         scoreShouldEqual(`0-0, Advantage ${playerTwo}`);
     });
 
+    it('should handle player one win a non deuce game', () => {
+        for (let i = 0; i < 4; i++) {
+            match.pointWonBy(playerOne);
+        }
+        scoreShouldEqual("1-0");
+    })
+
+    it('should handle player two win a non deuce game', () => {
+        for (let i = 0; i < 4; i++) {
+            match.pointWonBy(playerTwo);
+        }
+        scoreShouldEqual("0-1");
+    })
+
 })
