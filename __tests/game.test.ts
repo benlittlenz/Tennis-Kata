@@ -41,4 +41,43 @@ describe('Initialize tennis match', () => {
         scoreShouldEqual("0-0, 40-15")
     });
 
+    /*
+        If at least 3 points have been scored by each
+        player, and the scores are equal, the score is
+        "deuce".
+    */
+    it("should handle deuce", () => {
+        for (let i = 0; i < 3; i++) {
+            match.pointWonBy(playerOne);
+            match.pointWonBy(playerTwo);
+        }
+        scoreShouldEqual("0-0, Deuce");
+    });
+
+    /*
+        If at least 3 points have been scored by each
+        side and a player has one more point than his
+        opponent, the score of the game is "advantage"
+        for the player in the lead.
+    */
+    it('Should handle player one advantage', () => {
+        for (let i = 0; i < 3; i++) {
+            match.pointWonBy(playerOne);
+            match.pointWonBy(playerTwo);
+        }
+        scoreShouldEqual("0-0, Deuce");
+        match.pointWonBy(playerOne);
+        scoreShouldEqual(`0-0, Advantage ${playerOne}`);
+    });
+
+    it('Should handle player two advantage', () => {
+        for (let i = 0; i < 3; i++) {
+            match.pointWonBy(playerOne);
+            match.pointWonBy(playerTwo);
+        }
+        scoreShouldEqual("0-0, Deuce");
+        match.pointWonBy(playerTwo);
+        scoreShouldEqual(`0-0, Advantage ${playerTwo}`);
+    });
+
 })
