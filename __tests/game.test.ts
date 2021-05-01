@@ -102,4 +102,20 @@ describe('Initialize tennis match', () => {
         scoreShouldEqual("0-1");
     })
 
+    /*
+        A player should be able to win 6 games in a row and return 6-0
+    */
+    it('should have player one as winner', () => {
+        for (let i = 0; i < 24 ; i++) {
+            match.pointWonBy(playerOne);
+        }
+        scoreShouldEqual("6-0");
+    })
+
+    it('should have player two as winner', () => {
+        for (let i = 0; i < 24 ; i++) {
+            match.pointWonBy(playerTwo);
+        }
+        scoreShouldEqual("0-6");
+    })
 })

@@ -61,11 +61,19 @@ export class Match {
     }
 
     public playerOneWon(): boolean {
-        return this.points[0] >= 4 && (this.points[0] - this.points[1] >= 2) ? true : false;
+        if(this.points[0] >= 4 && (this.points[0] - this.points[1] >= 2)) {
+            this.points = [0, 0];
+            return true;
+        }
+        return false;
     }
 
     public playerTwoWon(): boolean {
-        return this.points[1] >= 4 && (this.points[1] - this.points[0] >= 2) ? true : false;
+        if(this.points[1] >= 4 && (this.points[1] - this.points[0] >= 2)) {
+            this.points = [0, 0];
+            return true;
+        }
+        return false;
     }
 
     public getScore(): string {
@@ -81,8 +89,9 @@ export class Match {
             return `Advantage ${this.players[1]}`
         }
 
-        if(this.playerOneWon()) return ""
-        if(this.playerTwoWon()) return ""
+        if((this.points[0] === 0 && this.points[1] === 0) && this.games[0] > 0 || this.games[1] > 0) {
+            return "";
+        }
 
         return `${pointLookup[this.points[0]]}-${pointLookup[this.points[1]]}`;
     }
