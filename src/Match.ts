@@ -9,6 +9,8 @@ const pointLookup: { [key: number]: string } = {
 };
 
 export class Match {
+    public winner?: Player;
+
     private players: [Player, Player];
     private points: [Score, Score];
     private games: [Game, Game];
@@ -25,23 +27,35 @@ export class Match {
         const index = this.players.findIndex((p: Player) => p === player)
         this.points[index] = this.points[index] + 1;
 
+        //console.log(this.points)
         if (this.isDeuce()) {
             this.deuces[index] = this.deuces[index] + 1;
             return
         }
 
-        if(this.playerOneWon()) {
+        /*
+            Increment game count by players game count
+        */
+        if(this.playerOneWonGame()) {
             this.games[0] = this.games[0] + 1;
         }
 
-        if(this.playerTwoWon()) {
+        if(this.playerTwoWonGame()) {
             this.games[1] = this.games[1] + 1;
+        }
+
+        if(this.playerOneWonMatch()) {
+            this.winner = this.players[index];
+        }
+        if(this.playerTwoWonMatch()) {
+            this.winner = this.players[index];
         }
     }
 
     public score(): string {
         const games = `${this.games[0]}-${this.games[1]}`
         const points = this.getScore();
+       //console.log('POINTS: ', points)
         if(points === "") {
             return games;
         }
@@ -60,7 +74,10 @@ export class Match {
         return this.points[1] >= 4 && this.points[1] - this.points[0] === 1 ? true : false;
     }
 
-    public playerOneWon(): boolean {
+    /*
+        A player wins a game by winning at least
+    */
+    public playerOneWonGame(): boolean {
         if(this.points[0] >= 4 && (this.points[0] - this.points[1] >= 2)) {
             this.points = [0, 0];
             return true;
@@ -68,9 +85,23 @@ export class Match {
         return false;
     }
 
-    public playerTwoWon(): boolean {
+    public playerTwoWonGame(): boolean {
         if(this.points[1] >= 4 && (this.points[1] - this.points[0] >= 2)) {
             this.points = [0, 0];
+            return true;
+        }
+        return false;
+    }
+
+    private playerOneWonMatch(): boolean {
+        if(this.games[0] >= 6 && (this.games[0] - this.games[1] >= 2)) {
+            return true;
+        }
+        return false;
+    }
+
+    private playerTwoWonMatch(): boolean {
+        if(this.games[1] >= 6 && (this.games[1] - this.games[0] >= 2)) {
             return true;
         }
         return false;
@@ -88,7 +119,7 @@ export class Match {
         if (this.isAdvantagePlayerTwo()) {
             return `Advantage ${this.players[1]}`
         }
-
+       // console.log("YO: ", this.points[0])
         if((this.points[0] === 0 && this.points[1] === 0) && this.games[0] > 0 || this.games[1] > 0) {
             return "";
         }
