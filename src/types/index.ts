@@ -8,4 +8,4 @@ export enum ScoreHandler {
     Point,
     Deuce,
     TieBreak
-  }
+}

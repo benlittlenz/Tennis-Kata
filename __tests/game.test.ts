@@ -14,10 +14,6 @@ describe('Initialize tennis match', () => {
         expect(match.score()).toBe(expected);
     }
 
-    const winnerShouldEqual = (expected: string | undefined) => {
-        expect(match.winner).toBe(expected);
-    }
-
     it('Should be a Match instance', () => {
         //console.log('HI', tennis)
         expect(match).toBeInstanceOf(Match);
@@ -64,19 +60,19 @@ describe('Initialize tennis match', () => {
         opponent, the score of the game is "advantage"
         for the player in the lead.
     */
-    // it('Should handle player one advantage', () => {
-    //     for (let i = 0; i < 3; i++) {
-    //         match.pointWonBy(playerOne);
-    //         match.pointWonBy(playerTwo);
-    //     }
-    //     scoreShouldEqual("0-0, Deuce");
-    //     match.pointWonBy(playerOne);
-    //     scoreShouldEqual(`0-0, Advantage ${playerOne}`);
-    //     match.pointWonBy(playerTwo);
-    //     scoreShouldEqual(`0-0, Deuce`);
-    //     match.pointWonBy(playerOne);
-    //     scoreShouldEqual(`0-0, Advantage ${playerOne}`);
-    // });
+    it('Should handle player one advantage', () => {
+        for (let i = 0; i < 3; i++) {
+            match.pointWonBy(playerOne);
+            match.pointWonBy(playerTwo);
+        }
+        scoreShouldEqual("0-0, Deuce");
+        match.pointWonBy(playerOne);
+        scoreShouldEqual(`0-0, Advantage ${playerOne}`);
+        match.pointWonBy(playerTwo);
+        scoreShouldEqual(`0-0, Deuce`);
+        match.pointWonBy(playerOne);
+        scoreShouldEqual(`0-0, Advantage ${playerOne}`);
+    });
 
     it('Should handle player two advantage', () => {
         for (let i = 0; i < 3; i++) {
@@ -114,6 +110,7 @@ describe('Initialize tennis match', () => {
             match.pointWonBy(playerOne);
         }
         scoreShouldEqual("6-0");
+        expect(match.playerOneWonMatch()).toBe(true);
     })
 
     it('should have player two as winner', () => {
@@ -121,7 +118,7 @@ describe('Initialize tennis match', () => {
             match.pointWonBy(playerTwo);
         }
         scoreShouldEqual("0-6");
-        winnerShouldEqual("Player Two")
+        expect(match.playerTwoWonMatch()).toBe(true);
     })
 
     /*
@@ -141,10 +138,9 @@ describe('Initialize tennis match', () => {
         for (let i = 0; i < 4; i++) {
             match.pointWonBy(playerOne);
         }
-        //match.pointWonBy(playerTwo);
-        //}
+
         scoreShouldEqual("7-5");
-        winnerShouldEqual("Player One")
+        expect(match.playerOneWonMatch()).toBe(true);
     })
 
     /*
@@ -176,5 +172,7 @@ describe('Initialize tennis match', () => {
         match.pointWonBy(playerOne);
         expect(match.score()).toEqual("7-6");
 
+        // expect(match.playerOneWonMatch()).toBe(true);
+        // expect(match.playerTwoWonMatch()).toBe(false);
     });
 })

@@ -1,4 +1,5 @@
-import { Player, Score, Game, Deuce, Tie } from './types'
+
+import { Player, Score, Game, Deuce, Tie, ScoreHandler } from './types'
 
 const pointLookup: { [key: number]: string } = {
     0: '0',
@@ -12,48 +13,48 @@ export class Match {
     public winner?: Player;
 
     private players: [Player, Player];
+    private scoreHandler: ScoreHandler;
     private points: [Score, Score];
     private games: [Game, Game];
-    private deuces: [Deuce, Deuce];
-    private ties: [Tie, Tie];
 
     constructor(playerOneName: Player, playerTwoName: Player) {
         this.players = [playerOneName, playerTwoName];
         this.points = [0, 0];
+        this.scoreHandler = ScoreHandler.Point;
         this.games = [0, 0];
-        this.deuces = [0, 0];
-        this.ties = [0, 0];
     }
 
     public pointWonBy(player: Player): void {
-        const index = this.players.findIndex((p: Player) => p === player)
-        this.points[index] = this.points[index] + 1;
+        const playerIndex = this.players.findIndex((p: Player) => p === player)
+        this.points[playerIndex] = this.points[playerIndex] + 1;
 
-        //console.log(this.points)
-        if(this.isTieBreak()) {
-            this.ties[index] = this.ties[index] + 1;
+        if (this.scoreHandler === ScoreHandler.Point) {
+            if (this.isDeuce()) {
+                // Change to deuce system and reset points
+                this.scoreHandler = ScoreHandler.Deuce;
+                this.points = [0, 0];
+            } else if (this.isTieBreak()) {
+                this.scoreHandler = ScoreHandler.TieBreak;
+            } else {
+                this.scoreHandler === ScoreHandler.Point
+            }
         }
-        if (this.isDeuce()) {
-            this.deuces[index] = this.deuces[index] + 1;
-        }
-
         /*
             Increment game count by players game count
         */
+
+        this.handlePlayerWin();
+
+    }
+
+    public handlePlayerWin(): void {
         if (this.playerOneWonGame()) {
             this.games[0] = this.games[0] + 1;
-        }
-
-        if (this.playerTwoWonGame()) {
+        } else if (this.playerTwoWonGame()) {
             this.games[1] = this.games[1] + 1;
         }
 
-        if (this.playerOneWonMatch()) {
-            this.winner = this.players[index];
-        }
-        if (this.playerTwoWonMatch()) {
-            this.winner = this.players[index];
-        }
+        return;
     }
 
     public score(): string {
@@ -72,10 +73,10 @@ export class Match {
     }
 
     public isTieBreak(): boolean {
-        if (this.games.every((game: number) => game === 6)) {
-            return true;
-        }
-        return false;
+        return this.games.every((game: number) => game === 6)
+            && Math.max(this.points[0], this.points[1]) < 7
+            ? true
+            : false;
     }
 
     public isAdvantagePlayerOne(): boolean {
@@ -119,32 +120,15 @@ export class Match {
         return false;
     }
 
-    public assertWinner(): Player {
-
-        return this.players[0];
-    }
-
     public getScore(): string {
-        if (this.isTieBreak()) {
-            return this.getTieBreakScore();
+        switch (this.scoreHandler) {
+            case ScoreHandler.TieBreak:
+                return this.getTieBreakScore();
+            case ScoreHandler.Deuce:
+                return this.getDeuceScore()
+            default:
+                return this.getPointScore();
         }
-        if (this.isDeuce()) {
-            return 'Deuce';
-        }
-
-        if (this.isAdvantagePlayerOne()) {
-            return `Advantage ${this.players[0]}`
-        }
-
-        if (this.isAdvantagePlayerTwo()) {
-            return `Advantage ${this.players[1]}`
-        }
-        // console.log("YO: ", this.points[0])
-        if ((this.points[0] === 0 && this.points[1] === 0) && this.games[0] > 0 || this.games[1] > 0) {
-            return "";
-        }
-
-        return `${pointLookup[this.points[0]]}-${pointLookup[this.points[1]]}`;
     }
 
     public pointsAreEqual(): boolean {
@@ -152,10 +136,29 @@ export class Match {
     }
 
     public getTieBreakScore(): string {
-        if (this.ties.every((d: number) => d === 0)) {
+        if (this.points.every((d: number) => d === 0)) {
             return "";
         }
 
-        return `${this.ties[0]}-${this.ties[1]}`
+        return `${this.points[0]}-${this.points[1]}`
+    }
+
+    public getPointScore(): string {
+        if ((this.points[0] === 0 && this.points[1] === 0) && this.games[0] > 0 || this.games[1] > 0) {
+            return "";
+        }
+
+        return `${pointLookup[this.points[0]]}-${pointLookup[this.points[1]]}`;
+    }
+
+    public getDeuceScore(): string {
+        if (this.pointsAreEqual()) {
+            return "Deuce";
+        }
+        if (this.points[0] > this.points[1]) {
+            return `Advantage ${this.players[0]}`;
+        }
+
+        return `Advantage ${this.players[1]}`;
     }
 }
