@@ -1,9 +1,9 @@
 import { Match } from '../src/Match'
-import { Player } from '../src/types'
+import { Competitor } from '../src/types'
 
 describe('Initialize tennis match', () => {
-    const playerOne: Player = "Player One";
-    const playerTwo: Player = "Player Two";
+    const playerOne: Competitor = "Player One";
+    const playerTwo: Competitor = "Player Two";
     let match: Match;
 
     beforeEach(() => {
@@ -172,7 +172,7 @@ describe('Initialize tennis match', () => {
         match.pointWonBy(playerOne);
         expect(match.score()).toEqual("7-6");
 
-        // expect(match.playerOneWonMatch()).toBe(true);
-        // expect(match.playerTwoWonMatch()).toBe(false);
+        expect(match.playerOneWonMatch()).toBe(true);
+        expect(match.playerTwoWonMatch()).toBe(false);
     });
 })
