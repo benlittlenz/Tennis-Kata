@@ -23,7 +23,7 @@ The scoring system for tennis works like this.
 
 * Add a pointWonBy method that indicates who won the point
 
-## Constraints
+Constraints
 
 * Only worry about 1 set
 * Don't worry about validation, assume the client passes in correct data

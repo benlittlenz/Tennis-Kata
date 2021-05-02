@@ -127,10 +127,10 @@ describe('Initialize tennis match', () => {
         the set 7–5. If the trailing player wins the game, a tie-break is played.
     */
     it('should assert p1 wins 7-5', () => {
-        for (let i = 0; i < 24; i++) {
+        for (let i = 0; i < 24; i++) { // 6 Games
             match.pointWonBy(playerOne);
         }
-        for (let j = 0; j < 20; j++) {
+        for (let j = 0; j < 20; j++) { // 5 Games
             match.pointWonBy(playerTwo);
         }
         scoreShouldEqual("6-5");
@@ -141,6 +141,7 @@ describe('Initialize tennis match', () => {
 
         scoreShouldEqual("7-5");
         expect(match.playerOneWonMatch()).toBe(true);
+        expect(match.playerTwoWonMatch()).toBe(false);
     })
 
     /*
@@ -153,10 +154,10 @@ describe('Initialize tennis match', () => {
     */
 
     it("should show tie breaks with a final set score of 7-6", () => {
-        for (let i = 0; i < 24; i++) {
+        for (let i = 0; i < 24; i++) { // 6 Games
             match.pointWonBy(playerOne);
         }
-        for (let j = 0; j < 24; j++) {
+        for (let j = 0; j < 24; j++) { // 6 Games
             match.pointWonBy(playerTwo);
         }
         scoreShouldEqual("6-6");
